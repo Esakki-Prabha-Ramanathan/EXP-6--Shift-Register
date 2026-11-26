@@ -20,8 +20,45 @@ else Q <= {Q[2:0], sin};   // shift left, sin enters at LSB
 Serial output: sout = Q[3]   (the bit about to be shifted out)
 
 ## Design / RTL Program
+// gedit shift_reg.v
+ 
+module shift_reg (
+    input  wire       clk,   // clock
+    input  wire       rst,   // asynchronous active-high reset
+    input  wire       sin,   // serial input
+    output wire       sout,  // serial output (MSB, about to shift out)
+    output reg  [3:0] Q      // parallel output
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            Q <= 4'b0000;
+        else
+            Q <= {Q[2:0], sin};   // shift left, sin enters at LSB
+    end
+ 
+    assign sout = Q[3];
+endmodule
+
 
 Testbench Program
+// gedit shift_reg.v
+ 
+module shift_reg (
+    input  wire       clk,   // clock
+    input  wire       rst,   // asynchronous active-high reset
+    input  wire       sin,   // serial input
+    output wire       sout,  // serial output (MSB, about to shift out)
+    output reg  [3:0] Q      // parallel output
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            Q <= 4'b0000;
+        else
+            Q <= {Q[2:0], sin};   // shift left, sin enters at LSB
+    end
+ 
+    assign sout = Q[3];
+endmodule
 
 
 
@@ -82,6 +119,7 @@ Q(next) = {Q[2:0], sin}
 The design was compiled and simulated using Synopsys VCS, and the functionality was verified using DVE waveform analysis, matching the expected operation table.
 
 ## Output
+<img width="1907" height="1068" alt="exp 6" src="https://github.com/user-attachments/assets/e24d7f20-7385-482d-a251-740596a6a93b" />
 
 
 
